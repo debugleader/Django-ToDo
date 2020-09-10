@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ToDo App</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Oswald"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link rel="stylesheet" href=" {% static 'todo/bs/css/flatly.min.css' %}" />
+    <link rel="stylesheet" href=" {% static 'todo/styles.css' %} " />
+  </head>
+  <body>
+    <div class="container-fluid" id="wrapper">
+      <div class="row">
+        <div
+          class="col-lg-4 col-lg-offset-4 animate__animated animate__fadeIn"
+          id="content"
+        >
+          <h2>WHAT DO YOU WANT TO DO TODAY?</h2>
+
+          <form action="{% url 'add' %}" method="POST" role="form">
+            {% csrf_token %}
+            <div class="form-group">
+              <div class="input-group">
+                {{ form.text }}
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-danger" id="add-btn">
+                    ADD
+                  </button>
+                </span>
+              </div>
+            </div>
+          </form>
+          {% if todo_exist %}
+          <div class="row t10">
+            <div class="col-lg-12">
+              <div class="btn-toolbar">
+                <div class="btn-group">
+                  <a href="deletecomplete"
+                    ><button
+                      type="button"
+                      class="btn btn-warning"
+                      id="top_up_pr"
+                    >
+                      <i class="glyphicon glyphicon-trash"></i> DELETE COMPLETED
+                    </button></a
+                  >
+                </div>
+                <a href="deleteadd"><div class="btn-group">
+                  <button type="button" class="btn btn-warning" id="top_up">
+                    <i class="glyphicon glyphicon-trash"></i> DELETE ALL
+                  </button></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+
+          <ul class="list-group t20">
+            {% if not todo_exist %}
+              <li class="list-group-item" id="warn">
+                You have not added anything yet.
+              </li>
+            {% else %}
+            {% for todo in todo_list %} {% if todo.complete %}
+            <a href="{% url 'undo' todo.id %}"
+              ><li class="list-group-item todo-completed">
+                {{ todo.text }}
+              </li></a
+            >
+            {% else %}
+            <a href="{% url 'complete' todo.id %}"
+              ><li class="list-group-item">{{ todo.text }}</li></a
+            >
+            {% endif %} {% endfor %} {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <footer>
+        <div class="row pad">
+          <div
+            class="col-lg-12 text-center animate__animated animate__fadeInUp copyr"
+          >
+            Copyright &copy; 2020 <strong>ToDo App</strong>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
