@@ -9,7 +9,7 @@ How to try the web app?
 cd into the repository location in your machine.
 ```
 ```python
-pip install django
+pip install Django==3.1.1
 ```
 ```python
 python manage.py migrate
